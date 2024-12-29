@@ -2,7 +2,10 @@ import type { Metadata } from "next";
 import { Ubuntu } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-
+//SSR config for uploadthing
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
+import { extractRouterConfig } from "uploadthing/server";
+import { ourFileRouter } from "@/app/api/uploadthing/core";
 const ubuntu = Ubuntu({
   variable: "--font-ubuntu",
   weight: ["400", "500", "700", "300"],
@@ -27,6 +30,8 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          {/* Uploadthing ssr plugin */}
+          <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
           {children}
         </ThemeProvider>
       </body>

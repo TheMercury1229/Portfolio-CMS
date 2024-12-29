@@ -1,10 +1,22 @@
+import { auth, signIn } from "@/auth";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { redirect } from "next/navigation";
 
-export default function Home() {
+export default async function Home() {
+  const session = await auth();
+  if (session) {
+    return redirect("/dashboard");
+  }
   return (
-    <div>
-      <Button>Button</Button>
-    </div>
+    <main className="flex items-center justify-center min-h-screen">
+      <form
+        action={async () => {
+          "use server";
+          await signIn("google");
+        }}
+      >
+        <Button>Continue with Google</Button>
+      </form>
+    </main>
   );
 }
